@@ -32,14 +32,14 @@ lb:place a rr:TriplesMap ;
     [rr:predicate rdfs:label ;
      rr:objectMap [rr:column "name"]] .
 
-lb:place_annotation a rr:TriplesMap ;
-  rr:logicalTable [rr:sqlQuery
-    """SELECT gid, text
-       FROM annotation
-         INNER JOIN place_annotation
-           ON annotation.id = place_annotation.annotation
-         INNER JOIN place ON place_annotation.place = place.id"""] ;
-  rr:subjectMap lb:sm_place ;
-  rr:predicateObjectMap
-    [rr:predicate rdfs:comment ;
-     rr:objectMap [rr:column "text"]] .
+# lb:place_annotation a rr:TriplesMap ;
+#   rr:logicalTable [rr:sqlQuery
+#     """SELECT gid, text
+#        FROM annotation
+#          INNER JOIN place_annotation
+#            ON annotation.id = place_annotation.annotation
+#          INNER JOIN place ON place_annotation.place = place.id"""] ;
+#   rr:subjectMap lb:sm_place ;
+#   rr:predicateObjectMap
+#     [rr:predicate rdfs:comment ;
+#      rr:objectMap [rr:column "text"]] .

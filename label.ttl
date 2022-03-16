@@ -43,14 +43,14 @@ lb:label_area a rr:TriplesMap ;
      rr:objectMap [rr:template "http://musicbrainz.org/area/{area}#_" ;
                    rr:termType rr:IRI]] .
 
-lb:label_annotation a rr:TriplesMap ;
-  rr:logicalTable [rr:sqlQuery
-    """SELECT gid, text
-       FROM annotation
-         INNER JOIN label_annotation
-           ON annotation.id = label_annotation.annotation
-         INNER JOIN label ON label_annotation.label = label.id"""] ;
-  rr:subjectMap lb:sm_label ;
-  rr:predicateObjectMap
-    [rr:predicate rdfs:comment ;
-     rr:objectMap [rr:column "text"]] .
+# lb:label_annotation a rr:TriplesMap ;
+#   rr:logicalTable [rr:sqlQuery
+#     """SELECT gid, text
+#        FROM annotation
+#          INNER JOIN label_annotation
+#            ON annotation.id = label_annotation.annotation
+#          INNER JOIN label ON label_annotation.label = label.id"""] ;
+#   rr:subjectMap lb:sm_label ;
+#   rr:predicateObjectMap
+#     [rr:predicate rdfs:comment ;
+#      rr:objectMap [rr:column "text"]] .

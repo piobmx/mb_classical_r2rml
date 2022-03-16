@@ -37,15 +37,15 @@ lb:Recording a rr:TriplesMap ;
     [rr:predicate mo:duration ;
      rr:objectMap [rr:column "length"; rr:datatype xsd:float]] .
 
-lb:recording_annotation a rr:TriplesMap ;
-  rr:logicalTable [rr:sqlQuery
-    """SELECT gid, text
-       FROM annotation
-         INNER JOIN recording_annotation
-           ON annotation.id = recording_annotation.annotation
-         INNER JOIN recording
-           ON recording_annotation.recording = recording.id"""] ;
-  rr:subjectMap lb:sm_recording ;
-  rr:predicateObjectMap
-    [rr:predicate rdfs:comment ;
-     rr:objectMap [rr:column "text"]] .
+#lb:recording_annotation a rr:TriplesMap ;
+#  rr:logicalTable [rr:sqlQuery
+#    """SELECT gid, text
+#       FROM annotation
+#         INNER JOIN recording_annotation
+#           ON annotation.id = recording_annotation.annotation
+#         INNER JOIN recording
+#           ON recording_annotation.recording = recording.id"""] ;
+#  rr:subjectMap lb:sm_recording ;
+#  rr:predicateObjectMap
+#    [rr:predicate rdfs:comment ;
+#     rr:objectMap [rr:column "text"]] .

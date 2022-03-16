@@ -162,7 +162,7 @@ SELECT release.gid,
        WHERE date_year IS NOT NULL
          AND date_month IS NULL
          AND date_day IS NULL
-         WHERE release.artist_credit in (select artist from tagged_artist)
+         AND release.artist_credit in (select artist from tagged_artist)
 """] ;
   rr:subjectMap lb:sm_release_event ;
   rr:predicateObjectMap
