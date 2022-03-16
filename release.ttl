@@ -39,9 +39,13 @@ lb:Release a rr:TriplesMap ;
 
 lb:release_record a rr:TriplesMap ;
   rr:logicalTable [rr:sqlQuery
-    """SELECT release.gid, medium.id
+    """
+        with tagged_artist AS (SELECT artist FROM musicbrainz.artist_tag WHERE tag IN (15, 163, 531, 532, 533, 661, 670, 3148, 5081, 33591, 32848))
+SELECT release.gid, medium.id
        FROM release
-            INNER JOIN medium ON release.id = medium.release"""] ;
+            INNER JOIN medium ON release.id = medium.release
+                WHERE release.artist_credit in (select artist from tagged_artist)
+"""] ;
   rr:subjectMap lb:sm_release ;
   rr:predicateObjectMap
     [rr:predicate mo:record ;
@@ -54,10 +58,14 @@ lb:release_record a rr:TriplesMap ;
 # at /browse_thread/thread/9ace96518564e8aa
 lb:release_release_group a rr:TriplesMap ;
   rr:logicalTable [rr:sqlQuery
-    """SELECT release.gid, release_group.gid AS release_group_gid
+    """
+    with tagged_artist AS (SELECT artist FROM musicbrainz.artist_tag WHERE tag IN (15, 163, 531, 532, 533, 661, 670, 3148, 5081, 33591, 32848))
+SELECT release.gid, release_group.gid AS release_group_gid
        FROM release
             INNER JOIN release_group
-              ON release.release_group = release_group.id"""] ;
+              ON release.release_group = release_group.id
+    WHERE release.artist_credit in (select artist from tagged_artist)
+"""] ;
   rr:subjectMap lb:sm_release ;
   rr:predicateObjectMap
     [rr:predicate event:factor ;
@@ -66,10 +74,15 @@ lb:release_release_group a rr:TriplesMap ;
 
 lb:release_label a rr:TriplesMap ;
   rr:logicalTable [rr:sqlQuery
-    """SELECT release.gid, label.gid AS label_gid
+    """
+    with tagged_artist AS (SELECT artist FROM musicbrainz.artist_tag WHERE tag IN (15, 163, 531, 532, 533, 661, 670, 3148, 5081, 33591, 32848))
+SELECT release.gid, label.gid AS label_gid
        FROM label
          INNER JOIN release_label ON label.id = release_label.label
-         INNER JOIN release ON release.id = release_label.release"""] ;
+         INNER JOIN release ON release.id = release_label.release
+         WHERE release.artist_credit in (select artist from tagged_artist)
+"""] ;
+
   rr:subjectMap lb:sm_release ;
   rr:predicateObjectMap
     [rr:predicate mo:label;
@@ -78,11 +91,15 @@ lb:release_label a rr:TriplesMap ;
 
 lb:ReleaseEvent a rr:TriplesMap ;
   rr:logicalTable [rr:sqlQuery
-    """SELECT release.gid, area.gid AS country
+    """
+with tagged_artist AS (SELECT artist FROM musicbrainz.artist_tag WHERE tag IN (15, 163, 531, 532, 533, 661, 670, 3148, 5081, 33591, 32848))
+SELECT release.gid, area.gid AS country
        FROM release
          INNER JOIN release_country ON release_country.release = release.id
          INNER JOIN area ON area.id = release_country.country
-       WHERE date_year IS NOT NULL"""] ;
+       WHERE date_year IS NOT NULL
+       AND release.artist_credit in (select artist from tagged_artist)
+"""] ;
   rr:subjectMap [rr:class mo:ReleaseEvent ;
                  rr:template "http://musicbrainz.org/release/{gid}#{country}"] ;
   rr:predicateObjectMap
@@ -91,7 +108,9 @@ lb:ReleaseEvent a rr:TriplesMap ;
 
 lb:release_event_date a rr:TriplesMap ;
   rr:logicalTable [rr:sqlQuery
-    """SELECT release.gid,
+    """
+     with tagged_artist AS (SELECT artist FROM musicbrainz.artist_tag WHERE tag IN (15, 163, 531, 532, 533, 661, 670, 3148, 5081, 33591, 32848))
+SELECT release.gid,
               BTRIM(TO_CHAR(date_year, '0000')) || '-' ||
                 BTRIM(TO_CHAR(date_month, '00')) || '-' ||
                 BTRIM(TO_CHAR(date_day, '00')) AS date,
@@ -101,7 +120,9 @@ lb:release_event_date a rr:TriplesMap ;
          INNER JOIN area ON area.id = release_country.country
        WHERE date_year IS NOT NULL
          AND date_month IS NOT NULL
-         AND date_day IS NOT NULL"""] ;
+         AND date_day IS NOT NULL
+         AND release.artist_credit in (select artist from tagged_artist)
+"""] ;
   rr:subjectMap lb:sm_release_event ;
   rr:predicateObjectMap
     [rr:predicate dc:date ;
@@ -109,7 +130,9 @@ lb:release_event_date a rr:TriplesMap ;
 
 lb:release_event_date_year_month a rr:TriplesMap ;
   rr:logicalTable [rr:sqlQuery
-    """SELECT release.gid,
+    """
+    with tagged_artist AS (SELECT artist FROM musicbrainz.artist_tag WHERE tag IN (15, 163, 531, 532, 533, 661, 670, 3148, 5081, 33591, 32848))
+SELECT release.gid,
               BTRIM(TO_CHAR(date_year, '0000')) || '-' ||
                 BTRIM(TO_CHAR(date_month, '00')) AS year_month,
               area.gid AS country
@@ -118,7 +141,9 @@ lb:release_event_date_year_month a rr:TriplesMap ;
          INNER JOIN area ON area.id = release_country.country
        WHERE date_year IS NOT NULL
          AND date_month IS NOT NULL
-         AND date_day IS NULL"""] ;
+         AND date_day IS NULL
+         AND release.artist_credit in (select artist from tagged_artist)
+"""] ;
   rr:subjectMap lb:sm_release_event ;
   rr:predicateObjectMap
     [rr:predicate dc:date ;
@@ -126,7 +151,9 @@ lb:release_event_date_year_month a rr:TriplesMap ;
 
 lb:release_event_date_year a rr:TriplesMap ;
   rr:logicalTable [rr:sqlQuery
-    """SELECT release.gid,
+    """
+    with tagged_artist AS (SELECT artist FROM musicbrainz.artist_tag WHERE tag IN (15, 163, 531, 532, 533, 661, 670, 3148, 5081, 33591, 32848))
+SELECT release.gid,
               BTRIM(TO_CHAR(date_year, '0000')) AS year,
               area.gid AS country
        FROM release
@@ -134,7 +161,9 @@ lb:release_event_date_year a rr:TriplesMap ;
          INNER JOIN area ON area.id = release_country.country
        WHERE date_year IS NOT NULL
          AND date_month IS NULL
-         AND date_day IS NULL"""] ;
+         AND date_day IS NULL
+         WHERE release.artist_credit in (select artist from tagged_artist)
+"""] ;
   rr:subjectMap lb:sm_release_event ;
   rr:predicateObjectMap
     [rr:predicate dc:date ;
@@ -142,24 +171,27 @@ lb:release_event_date_year a rr:TriplesMap ;
 
 lb:release_event_place a rr:TriplesMap ;
   rr:logicalTable [rr:sqlQuery
-    """SELECT release.gid, area.gid AS country
+    """with tagged_artist AS (SELECT artist FROM musicbrainz.artist_tag WHERE tag IN (15, 163, 531, 532, 533, 661, 670, 3148, 5081, 33591, 32848))
+SELECT release.gid, area.gid AS country
        FROM release
          INNER JOIN release_country ON release_country.release = release.id
-         INNER JOIN area ON area.id = release_country.country"""] ;
+         INNER JOIN area ON area.id = release_country.country
+         WHERE release.artist_credit in (select artist  from tagged_artist)
+"""] ;
   rr:subjectMap lb:sm_release_event ;
   rr:predicateObjectMap
     [rr:predicate event:place ;
      rr:objectMap [rr:template "http://musicbrainz.org/area/{country}#_" ;
                    rr:termType rr:IRI]] .
 
-lb:release_annotation a rr:TriplesMap ;
-  rr:logicalTable [rr:sqlQuery
-    """SELECT gid, text
-       FROM annotation
-         INNER JOIN release_annotation
-           ON annotation.id = release_annotation.annotation
-         INNER JOIN release ON release_annotation.release = release.id"""] ;
-  rr:subjectMap lb:sm_release ;
-  rr:predicateObjectMap
-    [rr:predicate rdfs:comment ;
-     rr:objectMap [rr:column "text"]] .
+#lb:release_annotation a rr:TriplesMap ;
+#  rr:logicalTable [rr:sqlQuery
+#    """SELECT gid, text
+#       FROM annotation
+#         INNER JOIN release_annotation
+#           ON annotation.id = release_annotation.annotation
+#         INNER JOIN release ON release_annotation.release = release.id"""] ;
+#  rr:subjectMap lb:sm_release ;
+#  rr:predicateObjectMap
+#    [rr:predicate rdfs:comment ;
+#     rr:objectMap [rr:column "text"]] .
