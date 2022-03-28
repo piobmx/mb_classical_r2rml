@@ -53,11 +53,9 @@ lb:medium_track a rr:TriplesMap ;
 lb:medium_format a rr:TriplesMap ;
   rr:logicalTable [rr:sqlQuery
     """
-        with tagged AS (SELECT artist FROM musicbrainz.artist_tag WHERE tag IN (15, 163, 531, 532, 533, 661, 670, 3148, 5081, 33591, 32848))
     SELECT medium.id, medium_format.id as medium_format_id
        FROM medium
          INNER JOIN medium_format ON medium.format = medium_format.id
-         WHERE track.artist_credit in (select artist from tagged)
 """];
   rr:subjectMap lb:sm_medium ;
   rr:predicateObjectMap

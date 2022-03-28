@@ -55,7 +55,7 @@ SELECT work.gid, artist.gid AS artist_gid
          INNER JOIN link_type ON link_type = link_type.id
          INNER JOIN work on l_artist_work.entity1 = work.id
        WHERE link_type.gid='d59d99ea-23d4-4a80-b066-edca32ee158f'
-       AND artist.artist_credit in (select artist from tagged_artist)
+       AND artist.id in (select artist from tagged_artist)
 """] ;
   rr:subjectMap lb:sm_composition ;
   rr:predicateObjectMap
